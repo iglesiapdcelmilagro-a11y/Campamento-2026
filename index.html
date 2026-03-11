@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forjando Victorias · Campamento Juvenil</title>
+    <!-- Tailwind CSS vía CDN + una capa extra para personalizar (opcional) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Añadimos una fuente moderna de Google Fonts para darle más carácter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Pequeños ajustes personalizados que no podemos hacer con Tailwind directo */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .font-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900; /* Black */
+            letter-spacing: -0.02em;
+        }
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%);
+        }
+        /* Efecto sutil de textura (opcional) */
+        .bg-texture {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- HERO SECTION: Imagen de fondo, overlay y contenido -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Imagen de fondo (cámbiala por una foto real de campamento) -->
+        <div class="absolute inset-0 z-0">
+            <img src="IndexIm.jpeg" 
+                 alt="Montañas al atardecer con fogata" 
+                 class="w-full h-full object-cover object-center">
+            <!-- Overlay con gradiente (más dramático y moderno) -->
+            <div class="absolute inset-0 hero-overlay"></div>
+            <!-- Textura sutil para darle profundidad -->
+            <div class="absolute inset-0 bg-texture"></div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+            <!-- Elemento decorativo: líneas / marca -->
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="h-1 w-12 bg-amber-500 rounded-full"></div>
+                <span class="text-sm font-bold tracking-[0.3em] uppercase text-amber-300">Campamento Juvenil 2026</span>
+                <div class="h-1 w-12 bg-amber-500 rounded-full"></div>
+            </div>
+            
+            <!-- Título principal con mucho peso -->
+            <h1 class="font-title text-6xl md:text-7xl lg:text-8xl leading-none mb-6 text-white">
+                FORJANDO<br>VICTORIAS
+            </h1>
+            
+            <!-- Lema con personalidad -->
+            <p class="text-xl md:text-2xl lg:text-3xl font-light max-w-3xl mx-auto mb-10 text-white/90">
+                "Victoria en el obrar de tus manos"
+            </p>
+            
+            <!-- Llamada a la acción con los botones actualizados -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <!-- Botón para la cena de gala (ancla a sección en la misma página) -->
+                <a href="#info" class="group relative px-8 py-4 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 shadow-lg hover:shadow-amber-500/30 hover:-translate-y-1">
+                    <span class="relative z-10">Un campamento diferente</span>
+                </a>
+                <!-- Botón "Precioso Salazar" que lleva a la página de información -->
+                <a href="info.html" class="group px-8 py-4 border-2 border-white/30 hover:border-white/70 text-white font-bold text-lg rounded-full backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300">
+                    Conoce más
+                </a>
+            </div>
+            
+            <!-- Indicador de scroll (un toque moderno) -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <div class="w-6 h-10 rounded-full border-2 border-white/50 flex justify-center">
+                    <div class="w-1 h-2 bg-white rounded-full mt-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de la cena de Gala (a la que lleva el primer botón) -->
+    <section id="info" class="py-24 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-amber-600 font-bold text-sm tracking-widest uppercase">¡Anotate ya!</span>
+                <h2 class="font-title text-4xl md:text-5xl text-gray-900 mt-2">Campamento 2026</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-4 text-lg">Forjando Victorias</p>
+            </div>
+            
+            <!-- Detalles de la cena de gala -->
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <img src="PSC.jpeg" 
+                         alt="Cena de gala" 
+                         class="rounded-3xl shadow-2xl">
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-title text-3xl">Pastor Saúl Cancinos</h3>
+                    <p class="text-gray-600 text-lg">"Palabras de nuestro pastor Saul Cancinos (Si la idea le gusto subiría a hablar con pastor para que escriba algo acá)".</p>
+                    <ul class="space-y-2 text-gray-600">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer simple -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+        <p class="text-sm">© 2026 Forjando Victorias · Campamento Juvenil · Victoria en el obrar de tus manos</p>
+    </footer>
+
+    <!-- Un mini script para el menú móvil (cuando lo desarrolles más) -->
+    <script>
+        // Aquí irá el JavaScript cuando añadas más funcionalidades
+        console.log("¡Listos para forjar victorias!");
+    </script>
+</body>
+</html>

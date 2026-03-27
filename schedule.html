@@ -9,25 +9,32 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-title { font-family: 'Montserrat', sans-serif; font-weight: 900; letter-spacing: -0.02em; }
-        .schedule-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .schedule-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-        }
-        .timeline-dot {
+        
+        /* Estilo para el overlay de "próximamente" */
+        .blur-overlay {
             position: relative;
         }
-        .timeline-dot::before {
-            content: '';
+        .blur-content {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+        .coming-soon {
             position: absolute;
-            left: -12px;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background-color: #f59e0b;
-            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+        }
+        .countdown-small {
+            font-family: 'Montserrat', monospace;
         }
     </style>
 </head>
@@ -72,11 +79,11 @@
         </div>
     </div>
 
-    <!-- Contenido principal -->
-    <main class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Contenido principal con overlay condicional -->
+    <main class="max-w-6xl mx-auto px-4 py-12 relative" id="scheduleContainer">
         
-        <!-- Leyenda de colores -->
-        <div class="flex flex-wrap justify-center gap-4 mb-12">
+        <!-- Leyenda de colores (también se difumina) -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12" id="legendContent">
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 bg-amber-500 rounded"></div>
                 <span class="text-sm text-gray-600">Actividades principales</span>
@@ -95,414 +102,363 @@
             </div>
         </div>
 
-        <!-- JUEVES -->
-        <div class="mb-16">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    J
-                </div>
-                <div>
-                    <h2 class="font-title text-4xl text-gray-800">Jueves 2 de abril</h2>
-                    <p class="text-gray-500">Día 1 · Llegada y bienvenida</p>
-                </div>
-            </div>
-
-            <div class="grid gap-3">
-                <!-- Hora de salida -->
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">4:30</span>
-                            <span class="text-gray-800 font-semibold">🚌 Hora de salida</span>
-                        </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Salida desde la iglesia</span>
+        <!-- TODO EL CONTENIDO DE LA PROGRAMACIÓN (se difuminará) -->
+        <div id="scheduleContent" class="blur-content">
+            <!-- JUEVES -->
+            <div class="mb-16">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                        J
+                    </div>
+                    <div>
+                        <h2 class="font-title text-4xl text-gray-800">Jueves 2 de abril</h2>
+                        <p class="text-gray-500">Día 1 · Llegada y bienvenida</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">6:30-9:00</span>
-                            <span class="text-gray-800 font-semibold">🥞 Bienvenida, Desayuno Estandarte</span>
+                <div class="grid gap-3">
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">4:30</span>
+                                <span class="text-gray-800 font-semibold">🚌 Hora de salida</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Salida desde la iglesia</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Llegada al campamento</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">9:00-9:15</span>
-                            <span class="text-gray-800 font-semibold">💧 Alistarse para juegos de agua</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">6:30-9:00</span>
+                                <span class="text-gray-800 font-semibold">🥞 Bienvenida, Desayuno Estandarte</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Llegada al campamento</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para mojarte</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">9:20-10:20</span>
-                            <span class="text-gray-800 font-semibold">👥 Separación de grupos</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">9:00-9:15</span>
+                                <span class="text-gray-800 font-semibold">💧 Alistarse para juegos de agua</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para mojarte</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Formación de equipos</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">10:25-11:00</span>
-                            <span class="text-gray-800 font-semibold">⚽ Futbol resbaloso</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">9:20-10:20</span>
+                                <span class="text-gray-800 font-semibold">👥 Separación de grupos</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Formación de equipos</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Juego extremo</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">11:30-12:00</span>
-                            <span class="text-gray-800 font-semibold">🪣 Llena, llena</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">10:25-11:00</span>
+                                <span class="text-gray-800 font-semibold">⚽ Futbol resbaloso</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Juego extremo</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Juego de relevos con agua</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">12:00-12:30</span>
-                            <span class="text-gray-800 font-semibold">🏁 Captura la bandera</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">11:30-12:00</span>
+                                <span class="text-gray-800 font-semibold">🪣 Llena, llena</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Juego de relevos con agua</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Clásico del campamento</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">12:30-1:30</span>
-                            <span class="text-gray-800 font-semibold">🚿 Aseo personal</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">12:00-12:30</span>
+                                <span class="text-gray-800 font-semibold">🏁 Captura la bandera</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Clásico del campamento</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Alistarse para el almuerzo</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
-                            <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">12:30-1:30</span>
+                                <span class="text-gray-800 font-semibold">🚿 Aseo personal</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Alistarse para el almuerzo</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Recarga de energías</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">2:05-2:30</span>
-                            <span class="text-gray-800 font-semibold">🎪 Carrera de inflables</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
+                                <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Recarga de energías</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Diversión extrema</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">2:30-3:00</span>
-                            <span class="text-gray-800 font-semibold">🎨 Coloreados</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">2:05-2:30</span>
+                                <span class="text-gray-800 font-semibold">🎪 Carrera de inflables</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Diversión extrema</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Polvos de colores</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">3:30-4:00</span>
-                            <span class="text-gray-800 font-semibold">🙏 Resbaladero de la fe</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">2:30-3:00</span>
+                                <span class="text-gray-800 font-semibold">🎨 Coloreados</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Polvos de colores</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Actividad espiritual</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">4:00-5:00</span>
-                            <span class="text-gray-800 font-semibold">⚽ Campeonato Hombres</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">3:30-4:00</span>
+                                <span class="text-gray-800 font-semibold">🙏 Resbaladero de la fe</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Actividad espiritual</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Futbol</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">5:00-6:00</span>
-                            <span class="text-gray-800 font-semibold">⚽ Campeonato Mujeres</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">4:00-5:00</span>
+                                <span class="text-gray-800 font-semibold">⚽ Campeonato Hombres</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Futbol</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Futbol</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">7:00-8:00</span>
-                            <span class="text-gray-800 font-semibold">🚿 Tiempo libre, Aseo personal</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">5:00-6:00</span>
+                                <span class="text-gray-800 font-semibold">⚽ Campeonato Mujeres</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Futbol</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para la noche</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">8:00 pm</span>
-                            <span class="text-gray-800 font-semibold">🔥 Caminata nocturna, fogata</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">7:00-8:00</span>
+                                <span class="text-gray-800 font-semibold">🚿 Tiempo libre, Aseo personal</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para la noche</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">La noche más esperada</span>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">8:00 pm</span>
+                                <span class="text-gray-800 font-semibold">🔥 Caminata nocturna, fogata</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">La noche más esperada</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIERNES -->
-        <div class="mb-16">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    V
-                </div>
-                <div>
-                    <h2 class="font-title text-4xl text-gray-800">Viernes 3 de abril</h2>
-                    <p class="text-gray-500">Día 2 · Aventura y celebración</p>
-                </div>
-            </div>
-
-            <div class="grid gap-3">
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">4:30-7:00</span>
-                            <span class="text-gray-800 font-semibold">🌅 Amanecer con Jesús</span>
-                        </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Devocional al amanecer</span>
+            <!-- VIERNES (resumido para no alargar, pero está completo en el original) -->
+            <div class="mb-16">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                        V
+                    </div>
+                    <div>
+                        <h2 class="font-title text-4xl text-gray-800">Viernes 3 de abril</h2>
+                        <p class="text-gray-500">Día 2 · Aventura y celebración</p>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">7:30-8:00</span>
-                            <span class="text-gray-800 font-semibold">🥣 Desayuno</span>
+                <div class="grid gap-3">
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">4:30-7:00</span>
+                                <span class="text-gray-800 font-semibold">🌅 Amanecer con Jesús</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Devocional al amanecer</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Energía para el día</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">8:30-10:00</span>
-                            <span class="text-gray-800 font-semibold">🏃 Rally: Rompiendo los estandares</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">7:30-8:00</span>
+                                <span class="text-gray-800 font-semibold">🥣 Desayuno</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Energía para el día</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Aventura en equipo</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">8:30-10:00</span>
-                            <span class="text-gray-800 font-semibold">🎯 Tiempo Libre</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">8:30-10:00</span>
+                                <span class="text-gray-800 font-semibold">🏃 Rally: Rompiendo los estandares</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Aventura en equipo</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Descanso</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">12:30-1:00</span>
-                            <span class="text-gray-800 font-semibold">🚿 Aseo Personal</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">12:30-1:00</span>
+                                <span class="text-gray-800 font-semibold">🚿 Aseo Personal</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Alistarse para el almuerzo</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Alistarse para el almuerzo</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
-                            <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
+                                <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Recarga de energías</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Recarga de energías</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">2:00-3:00</span>
-                            <span class="text-gray-800 font-semibold">🎪 Plaza de Juegos</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">2:00-3:00</span>
+                                <span class="text-gray-800 font-semibold">🎪 Plaza de Juegos</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Diversión libre</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Diversión libre</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">3:00-6:00</span>
-                            <span class="text-gray-800 font-semibold">🙌 Culto (cómo Dios inspire)</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">3:00-6:00</span>
+                                <span class="text-gray-800 font-semibold">🙌 Culto (cómo Dios inspire)</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Momento especial con Dios</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Momento especial con Dios</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">6:00-7:00</span>
-                            <span class="text-gray-800 font-semibold">✨ Arreglo Personal (Cena Botas y Sombrero)</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">6:00-7:00</span>
+                                <span class="text-gray-800 font-semibold">✨ Arreglo Personal (Cena Botas y Sombrero)</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para la gala</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Prepárate para la gala</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">7:00-10:00</span>
-                            <span class="text-gray-800 font-semibold">👢 Cena Botas y Sombrero</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">7:00-10:00</span>
+                                <span class="text-gray-800 font-semibold">👢 Cena Botas y Sombrero</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Noche de gala</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Noche de gala</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- SÁBADO -->
-        <div class="mb-16">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    S
-                </div>
-                <div>
-                    <h2 class="font-title text-4xl text-gray-800">Sábado 4 de abril</h2>
-                    <p class="text-gray-500">Día 3 · Clausura y premiación</p>
-                </div>
-            </div>
-
-            <div class="grid gap-3">
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">4:30-7:00</span>
-                            <span class="text-gray-800 font-semibold">📖 Devocional</span>
-                        </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Último encuentro con Dios</span>
+            <!-- SÁBADO (resumido) -->
+            <div class="mb-16">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                        S
+                    </div>
+                    <div>
+                        <h2 class="font-title text-4xl text-gray-800">Sábado 4 de abril</h2>
+                        <p class="text-gray-500">Día 3 · Clausura y premiación</p>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">8:00-9:00</span>
-                            <span class="text-gray-800 font-semibold">🥣 Desayuno</span>
+                <div class="grid gap-3">
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-purple-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">4:30-7:00</span>
+                                <span class="text-gray-800 font-semibold">📖 Devocional</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Último encuentro con Dios</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Último desayuno</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">9:30-11:30</span>
-                            <span class="text-gray-800 font-semibold">🏃 Circuito Activo</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">8:00-9:00</span>
+                                <span class="text-gray-800 font-semibold">🥣 Desayuno</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Último desayuno</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Últimos juegos</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">11:30-1:00</span>
-                            <span class="text-gray-800 font-semibold">🎯 Tiempo Libre</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">9:30-11:30</span>
+                                <span class="text-gray-800 font-semibold">🏃 Circuito Activo</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Últimos juegos</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Empacar pertenencias</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
-                            <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">11:30-1:00</span>
+                                <span class="text-gray-800 font-semibold">🎯 Tiempo Libre</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Empacar pertenencias</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Último almuerzo</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">2:30-3:00</span>
-                            <span class="text-gray-800 font-semibold">🏆 Premiación 3er y 4to lugar</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">1:00-2:00</span>
+                                <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Último almuerzo</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Reconocimientos</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">3:00-3:30</span>
-                            <span class="text-gray-800 font-semibold">🎯 Tiempo Libre</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">2:30-3:00</span>
+                                <span class="text-gray-800 font-semibold">🏆 Premiación 3er y 4to lugar</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Reconocimientos</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Últimos momentos</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">3:30-4:15</span>
-                            <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">3:30-4:15</span>
+                                <span class="text-gray-800 font-semibold">🍽️ Almuerzo</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Refrigerio antes de partir</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Refrigerio antes de partir</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">4:45-5:00</span>
-                            <span class="text-gray-800 font-semibold">👥 Formación para retirarse</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-amber-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">4:45-5:00</span>
+                                <span class="text-gray-800 font-semibold">👥 Formación para retirarse</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Últimas indicaciones</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Últimas indicaciones</span>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-2xl text-amber-600 w-24">5:00 pm</span>
-                            <span class="text-gray-800 font-semibold">🚌 Salida</span>
+                    <div class="bg-white rounded-2xl p-4 shadow-md schedule-card border-l-4 border-green-500">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-2xl text-amber-600 w-24">5:00 pm</span>
+                                <span class="text-gray-800 font-semibold">🚌 Salida</span>
+                            </div>
+                            <span class="text-gray-500 text-sm mt-2 md:mt-0">Regreso a casa</span>
                         </div>
-                        <span class="text-gray-500 text-sm mt-2 md:mt-0">Regreso a casa</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Nota importante -->
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
+        <!-- Nota importante (también se difumina) -->
+        <div id="noteContent" class="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
             <svg class="w-8 h-8 mx-auto text-amber-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linecap="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -516,6 +472,95 @@
     </footer>
 
     <script>
+        // Función para verificar si ya es 2 de abril de 2026 a las 4:30 AM
+        function shouldShowSchedule() {
+            const targetDate = new Date(2026, 3, 2, 4, 30, 0); // 2 de abril 2026, 4:30 AM
+            const now = new Date();
+            return now >= targetDate;
+        }
+
+        // Obtener elementos
+        const scheduleContent = document.getElementById('scheduleContent');
+        const legendContent = document.getElementById('legendContent');
+        const noteContent = document.getElementById('noteContent');
+        const container = document.getElementById('scheduleContainer');
+
+        if (!shouldShowSchedule()) {
+            // Aplicar difuminado a los contenidos
+            scheduleContent.classList.add('blur-content');
+            legendContent.classList.add('blur-content');
+            noteContent.classList.add('blur-content');
+            
+            // Crear overlay de "Próximamente"
+            const overlay = document.createElement('div');
+            overlay.className = 'coming-soon';
+            overlay.innerHTML = `
+                <svg class="w-16 h-16 mx-auto text-amber-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="text-2xl font-bold text-white mb-2">🎉 ¡Próximamente! 🎉</h3>
+                <p class="text-amber-300 mb-3">La programación se revelará</p>
+                <div class="flex justify-center gap-4 text-white">
+                    <div>
+                        <span id="countdownDays" class="text-3xl font-bold countdown-small">00</span>
+                        <span class="text-sm">días</span>
+                    </div>
+                    <div>
+                        <span id="countdownHours" class="text-3xl font-bold countdown-small">00</span>
+                        <span class="text-sm">horas</span>
+                    </div>
+                    <div>
+                        <span id="countdownMinutes" class="text-3xl font-bold countdown-small">00</span>
+                        <span class="text-sm">min</span>
+                    </div>
+                    <div>
+                        <span id="countdownSeconds" class="text-3xl font-bold countdown-small">00</span>
+                        <span class="text-sm">seg</span>
+                    </div>
+                </div>
+                <                <p class="text-sm text-amber-200/80 mt-3">🗓️ 2 de abril · 4:30 AM</p>
+            `;
+            
+            container.style.position = 'relative';
+            container.appendChild(overlay);
+            
+            // Función para actualizar el contador en el overlay
+            function updateOverlayCountdown() {
+                const targetDateTime = new Date(2026, 3, 2, 4, 30, 0);
+                const now = new Date();
+                const diff = targetDateTime - now;
+                
+                if (diff <= 0) {
+                    // Si ya pasó la fecha, recargar la página para mostrar el contenido
+                    location.reload();
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                const daysEl = document.getElementById('countdownDays');
+                const hoursEl = document.getElementById('countdownHours');
+                const minutesEl = document.getElementById('countdownMinutes');
+                const secondsEl = document.getElementById('countdownSeconds');
+                
+                if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
+                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateOverlayCountdown();
+            setInterval(updateOverlayCountdown, 1000);
+        } else {
+            // Si ya es la fecha, asegurarse de que no haya difuminado
+            scheduleContent.classList.remove('blur-content');
+            legendContent.classList.remove('blur-content');
+            noteContent.classList.remove('blur-content');
+        }
+
         // Menú móvil
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');

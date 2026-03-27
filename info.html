@@ -14,17 +14,41 @@
 <body class="bg-gray-50 text-gray-900">
 
     <!-- Navegación simple -->
-    <nav class="bg-white shadow-sm py-4 px-6 sticky top-0 z-10">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <span class="font-title text-xl text-amber-800">FORJANDO VICTORIAS</span>
-            <a href="index.html" class="text-gray-600 hover:text-amber-600 flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                </svg>
-                Volver al inicio
+<!-- NAVBAR (el mismo para todas las páginas) -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="index.html" class="font-title text-xl text-amber-800 hover:text-amber-600 transition">
+                FORJANDO VICTORIAS
             </a>
+            
+            <!-- Menú de navegación -->
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Inicio</a>
+                <a href="info.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Información</a>
+                <a href="gallery.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Galería</a>
+                <a href="schedule.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Programación</a>
+            </div>
+
+            <!-- Botón menú móvil -->
+            <button id="menuBtn" class="md:hidden text-gray-700 hover:text-amber-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
-    </nav>
+    </div>
+
+    <!-- Menú móvil desplegable -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200">
+        <div class="flex flex-col space-y-3 px-4 py-3">
+            <a href="index.html" class="text-gray-700 hover:text-amber-600 transition py-2">Inicio</a>
+            <a href="info.html" class="text-gray-700 hover:text-amber-600 transition py-2">Información</a>
+            <a href="gallery.html" class="text-gray-700 hover:text-amber-600 transition py-2">Galería</a>
+        </div>
+    </div>
+</nav>
 
     <!-- Contenido: toda la info útil -->
     <main class="max-w-6xl mx-auto px-4 py-12">
@@ -37,7 +61,7 @@
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden mb-16 border border-gray-100">
             <div class="grid md:grid-cols-2">
                 <div class="h-64 md:h-auto bg-amber-800 relative">
-                    <img src="infoft.jpeg" 
+                    <img src="Logo camp.jpeg" 
                          alt="Grupo de jóvenes en la montaña"
                          class="w-full h-full object-cover opacity-80">
                     <div class="absolute inset-0 bg-gradient-to-r from-amber-900/70 to-transparent"></div>

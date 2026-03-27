@@ -13,8 +13,6 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-    <!-- Navegación simple -->
-<!-- NAVBAR (el mismo para todas las páginas) -->
 <nav class="bg-white shadow-lg sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
@@ -23,15 +21,14 @@
                 FORJANDO VICTORIAS
             </a>
             
-            <!-- Menú de navegación -->
+
             <div class="hidden md:flex space-x-8">
                 <a href="index.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Inicio</a>
-                <a href="info.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Información</a>
+                <a href="info.html" class="text-amber-600 font-bold border-b-2 border-amber-600 pb-1">Información</a>
                 <a href="gallery.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Galería</a>
                 <a href="schedule.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Programación</a>
             </div>
 
-            <!-- Botón menú móvil -->
             <button id="menuBtn" class="md:hidden text-gray-700 hover:text-amber-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -40,25 +37,22 @@
         </div>
     </div>
 
-    <!-- Menú móvil desplegable -->
     <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200">
         <div class="flex flex-col space-y-3 px-4 py-3">
             <a href="index.html" class="text-gray-700 hover:text-amber-600 transition py-2">Inicio</a>
-            <a href="info.html" class="text-gray-700 hover:text-amber-600 transition py-2">Información</a>
+            <a href="info.html" class="text-amber-600 font-bold py-2">Información</a>
             <a href="gallery.html" class="text-gray-700 hover:text-amber-600 transition py-2">Galería</a>
-            <a href="schedule.html" class="text-gray-700 hover:text-amber-600 transition font-medium">Programación</a>
+            <a href="schedule.html" class="text-gray-700 hover:text-amber-600 transition py-2">Programación</a>
         </div>
     </div>
 </nav>
 
-    <!-- Contenido: toda la info útil -->
     <main class="max-w-6xl mx-auto px-4 py-12">
         
-        <!-- Título de la página -->
+
         <h1 class="font-title text-5xl text-center mb-4">Información del campamento</h1>
         <p class="text-center text-gray-600 text-lg mb-12">Todo lo que necesitas saber para preparar tu mochila</p>
 
-        <!-- TARJETA DE DATOS CLAVE -->
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden mb-16 border border-gray-100">
             <div class="grid md:grid-cols-2">
                 <div class="h-64 md:h-auto bg-amber-800 relative">
@@ -95,12 +89,11 @@
             </div>
         </div>
 
-        <!-- AVENTURA EN EL VOLCÁN -->
         <div class="mb-16">
             <h2 class="font-title text-4xl text-center mb-6 text-amber-700">🌋 AVENTURA EN EL VOLCÁN</h2>
             
             <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
-                <!-- Vestimenta Volcán -->
+
                 <div class="mb-8">
                     <h3 class="font-title text-2xl mb-4 flex items-center gap-2">
                         <span class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
@@ -130,7 +123,6 @@
                     </div>
                 </div>
 
-                <!-- Calzado Volcán -->
                 <div class="mb-8">
                     <h3 class="font-title text-2xl mb-4 flex items-center gap-2">
                         <span class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
@@ -143,7 +135,6 @@
                     <p class="text-gray-700 ml-10">Tenis cómodos o botas</p>
                 </div>
 
-                <!-- Equipo Volcán -->
                 <div>
                     <h3 class="font-title text-2xl mb-4 flex items-center gap-2">
                         <span class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
@@ -171,12 +162,10 @@
             </div>
         </div>
 
-        <!-- LISTADO GENERAL VESTIMENTA -->
         <div class="mb-16">
             <h2 class="font-title text-3xl text-center mb-8">📋 LISTADO GENERAL VESTIMENTA</h2>
             
             <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
-                <!-- Primera fila: elementos comunes -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-amber-50 p-4 rounded-2xl text-center">
                         <svg class="w-8 h-8 mx-auto mb-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,7 +193,6 @@
                     </div>
                 </div>
 
-                <!-- Sección separada para señoritas y hombres -->
                 <div class="grid md:grid-cols-2 gap-6">
                     <!-- Señoritas -->
                     <div class="bg-pink-50 rounded-2xl p-6">
@@ -300,11 +288,11 @@
                 </div>
             </div>
             
-            <!-- Nota aclaratoria (por si acaso) -->
+
             <p class="text-center text-gray-600 mt-6 italic">* Botas y sombreros para la ocasión especial</p>
         </div>
 
-        <!-- CONTACTOS (se mantiene igual) -->
+
         <div class="bg-gray-900 text-white rounded-3xl p-8 md:p-12 shadow-2xl">
             <div class="text-center mb-10">
                 <span class="text-amber-400 font-bold text-sm tracking-widest uppercase">¿Hablamos?</span>
@@ -344,5 +332,17 @@
     <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm border-t border-gray-800">
         © 2026 Forjando Victorias · Campamento Juvenil
     </footer>
+
+    <!-- SCRIPT DEL MENÚ MÓVIL (lo que te faltaba) -->
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
 </body>
 </html>
